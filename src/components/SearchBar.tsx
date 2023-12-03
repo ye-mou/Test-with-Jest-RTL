@@ -30,16 +30,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
       <Flex alignItems="center">
         <Input
           type="text"
+          border={"1px"}
           value={word}
           onChange={(e) => setWord(e.target.value)}
           placeholder="Enter a word"
           variant="filled"
           mr={2}
         />
-        <Button colorScheme="teal" onClick={handleSearch} mr={2}>
+        <Button colorScheme="teal" onClick={handleSearch} mr={2} border={"1px"}>
           Search
         </Button>
-        <Button onClick={handleClear} variant="outline">
+        <Button onClick={handleClear} variant="outline" border={"1px"}>
           Clear
         </Button>
       </Flex>

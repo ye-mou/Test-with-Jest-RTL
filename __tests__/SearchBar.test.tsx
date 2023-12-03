@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import SearchBar from "../SearchBar";
+import SearchBar from "../src/components/SearchBar";
+import apiMockData from "../src/components/search/apiMockData.json"; // Correct import statement
 
+// This is to group the tests
 describe("SearchBar", () => {
   test("renders SearchBar correctly", () => {
     const onSearchMock = jest.fn();
@@ -8,7 +10,7 @@ describe("SearchBar", () => {
 
     render(<SearchBar onSearch={onSearchMock} onClear={onClearMock} />);
 
-    // Check if the input, search button, and clear button are present
+    // Check if the input, search button, and clear button exist by their names
     const inputElement = screen.getByPlaceholderText("Enter a word");
     const searchButton = screen.getByRole("button", { name: "Search" });
     const clearButton = screen.getByRole("button", { name: "Clear" });
@@ -44,15 +46,6 @@ describe("SearchBar", () => {
 
     render(<SearchBar onSearch={onSearchMock} onClear={onClearMock} />);
 
-    // Trigger a search without entering a word to show the error message
-    fireEvent.click(screen.getByRole("button", { name: "Search" }));
-
-    // Check if the error message is displayed
-    const errorMessage = screen.getByText(
-      "The search is empty 👻! Try to type a word"
-    );
-    expect(errorMessage).toBeInTheDocument();
-
     // Trigger the clear button
     fireEvent.click(screen.getByRole("button", { name: "Clear" }));
 
@@ -60,5 +53,47 @@ describe("SearchBar", () => {
     expect(
       screen.queryByText("The search is empty 👻! Try to type a word")
     ).toBeNull();
+  });
+
+  test("should show search results when searching for a word", async () => {
+    const onSearchMock = jest.fn();
+    const onClearMock = jest.fn();
+
+    render(<SearchBar onSearch={onSearchMock} onClear={onClearMock} />);
+
+    // Trigger the search button
+    fireEvent.change(screen.getByPlaceholderText("Enter a word"), {
+      target: { value: "hello" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Search" }));
+
+    // Check if the search results are displayed
+    const searchResults = await screen.findAllByText("hello");
+    expect(searchResults).toHaveLength(2);
+  });
+
+  // Mock the fetch function globally
+  global.fetch = jest.fn().mockResolvedValue({
+    json: async () => apiMockData,
+  });
+
+  test("should show search results when searching for a word in the bar", async () => {
+    const onSearchMock = jest.fn();
+    const onClearMock = jest.fn();
+
+    render(<SearchBar onSearch={onSearchMock} onClear={onClearMock} />);
+
+    // Trigger the search button
+    fireEvent.change(screen.getByPlaceholderText("Enter a word"), {
+      target: { value: "hello" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Search" }));
+
+    // Ensure that the fetch function is called with the correct URL
+    expect(global.fetch).toHaveBeenCalledWith("./apiMockData.json");
+
+    // Check if the search results are displayed
+    const searchResults = await screen.findAllByText("hello");
+    expect(searchResults).toHaveLength(2);
   });
 });

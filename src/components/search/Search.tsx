@@ -1,9 +1,8 @@
-import { Box, Heading, useColorModeValue, useToken } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Box, Heading, useToken } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 
-import DefinitionDisplay from "./DefinitionDisplay";
-import SearchBar from "./SearchBar";
-import WordDisplay from "./WordDisplay";
+import DefinitionDisplay from "../DefinitionDisplay";
+import SearchBar from "../SearchBar";
 
 interface Phonetic {
   text: string;
@@ -28,61 +27,54 @@ export interface Definition {
 
 // Define the shape of the props
 const Search: React.FC = () => {
-  // State to track the current word
   const [word, setWord] = useState<string>("");
-  // State to track the definitions
   const [definitions, setDefinitions] = useState<Definition[]>([]);
 
-  // Handler function for initiating a search
-  // This function is run when the user clicks the search button
-  // This function is asynchronous because it uses the fetch API
-  // The function is marked as async so that we can use the await keyword
-  const handleSearch = async (searchWord: string) => {
-    if (searchWord) {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://api.dictionaryapi.dev/api/v2/entries/en/${searchWord}`
+          `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
         );
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+        if (!response || !response.ok) {
+          throw new Error("Your search did not return any results");
         }
 
         const data: Definition[] = await response.json();
 
-        setWord(searchWord);
         setDefinitions(data);
       } catch (error) {
         console.error("Error fetching data:", error);
 
-        // Handle errors, e.g., display an error message to the user
         if (error instanceof Error) {
           alert(error.message);
         }
 
-        // Clear the word and definitions
-        setWord("");
         setDefinitions([]);
       }
+    };
+
+    if (word) {
+      fetchData();
     }
+  }, [word]);
+
+  const handleSearch = (searchWord: string) => {
+    setWord(searchWord);
   };
-  // Handler function to clear the search input
+
   const handleClear = () => {
     setWord("");
     setDefinitions([]);
   };
 
   return (
-    <Box
-      p={4}
-      bg={useColorModeValue("gray.100", "gray.800")}
-      color={useToken("colors", "gray.800", "gray.200")}
-    >
+    <Box p={4} color={useToken("colors", "gray.800", "gray.200")}>
       <Heading as="h1" size="xl" mb={4}>
         Search for a word
       </Heading>
       <SearchBar onSearch={handleSearch} onClear={handleClear} />
-      <WordDisplay word={word} />
 
       {definitions.map((definition, index) => (
         <DefinitionDisplay key={index} definition={definition} />
@@ -92,3 +84,4 @@ const Search: React.FC = () => {
 };
 
 export default Search;
+export {};

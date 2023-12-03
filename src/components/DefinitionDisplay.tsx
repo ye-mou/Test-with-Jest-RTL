@@ -1,9 +1,9 @@
 // DefinitionDisplay.tsx
 import { Box, Heading, Text } from "@chakra-ui/react";
 import React from "react";
-import { Definition } from "./Search";
+import { Definition } from "./search/Search";
 
-interface DefinitionDisplayProps {
+export interface DefinitionDisplayProps {
   definition: Definition;
 }
 
@@ -16,15 +16,13 @@ const DefinitionDisplay: React.FC<DefinitionDisplayProps> = ({
         {definition.word}
       </Heading>
 
-      {/* Display a minimal set of information */}
-      <Box mb={4}>
+      <Box mb={4} data-testid="part-of-speech">
         <Text>Part of Speech: {definition.meanings[0].partOfSpeech}</Text>
-        <Text>
+        <Text data-testid="definition">
           Definition: {definition.meanings[0].definitions[0].definition}
         </Text>
       </Box>
 
-      {/* Display additional meanings */}
       <Box mb={4}>
         {definition.meanings.map((meaning, index) => (
           <div key={index}>
@@ -57,3 +55,5 @@ const DefinitionDisplay: React.FC<DefinitionDisplayProps> = ({
 };
 
 export default DefinitionDisplay;
+
+export {};
