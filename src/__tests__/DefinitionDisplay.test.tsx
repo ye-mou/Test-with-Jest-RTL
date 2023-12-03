@@ -2,8 +2,10 @@
 import { render, screen, within } from "@testing-library/react";
 import DefinitionDisplay from "../components/DefinitionDisplay";
 
+// Test if the word is displayed
 describe("DefinitionDisplay", () => {
   test("renders the definition component", () => {
+    // Mock the definition data
     const mockDefinition = {
       word: "hello",
       phonetics: [
@@ -39,6 +41,7 @@ describe("DefinitionDisplay", () => {
     ).getByText("Part of Speech: exclamation");
     expect(partOfSpeechElement).toBeInTheDocument();
 
+    // Test if the definition is displayed
     const definitionElement = within(
       screen.getByTestId("definition")
     ).getByText(

@@ -9,7 +9,7 @@ interface Phonetic {
   audio?: string;
 }
 
-// Define the shape of the data returned from the API by defining an interface
+// Define the shape of the data returned from the API
 export interface Definition {
   word: string;
   phonetics: Phonetic[];
@@ -75,8 +75,6 @@ const Search: React.FC = () => {
       color={useToken("colors", "gray.800", "gray.200")}
       data-testid="search-component"
     >
-      {" "}
-      {/* Add data-testid for the search component */}
       <Heading as="h1" size="xl" mb={4}>
         Search for a word
       </Heading>
