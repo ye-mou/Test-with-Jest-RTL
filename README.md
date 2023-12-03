@@ -4,7 +4,7 @@ English dictionary
 
 - Test with Jest and RTL
 
-# Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
 
