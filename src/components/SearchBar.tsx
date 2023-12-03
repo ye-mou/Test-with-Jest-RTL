@@ -36,16 +36,28 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClear }) => {
           placeholder="Enter a word"
           variant="filled"
           mr={2}
+          data-testid="search-input"
         />
-        <Button colorScheme="teal" onClick={handleSearch} mr={2} border={"1px"}>
+        <Button
+          colorScheme="teal"
+          onClick={handleSearch}
+          mr={2}
+          border={"1px"}
+          data-testid="search-button"
+        >
           Search
         </Button>
-        <Button onClick={handleClear} variant="outline" border={"1px"}>
+        <Button
+          onClick={handleClear}
+          variant="outline"
+          border={"1px"}
+          data-testid="clear-button"
+        >
           Clear
         </Button>
       </Flex>
       {error && (
-        <Text color="red" mt={2}>
+        <Text color="red" mt={2} data-testid="error-message">
           {error}
         </Text>
       )}

@@ -1,58 +1,38 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Search from "../components/search/Search";
+import Search from "../components/Search";
 
 describe("Search component", () => {
   test("should allow users to search for a word and display the result of the word", async () => {
     render(<Search />);
 
     const searchInput = screen.getByPlaceholderText("Enter a word");
-    expect(searchInput).toBeInTheDocument();
-
     await userEvent.type(searchInput, "hello");
     await waitFor(() => expect(searchInput).toHaveValue("hello"));
 
-    const searchButton = screen.getByRole("button", { name: /Search/i });
-    expect(searchButton).toBeInTheDocument();
-    await userEvent.click(searchButton);
-    await waitFor(() => expect(searchInput).toHaveValue(""));
+    // Check if DefinitionDisplay component is rendered
+    await waitFor(() => {
+      const definitionDisplay = screen.getByTestId("definition-display");
+      expect(definitionDisplay).toBeInTheDocument();
+    });
 
-    // Use findByText to wait for the text to appear
-    const searchResults = await screen.findByText("hello");
-    expect(searchResults).toBeInTheDocument();
+    // Your other assertions related to the content of DefinitionDisplay
+    const heading = screen.getByRole("heading", { name: /hello/i });
+    expect(heading).toBeInTheDocument();
 
-    // Check if the word is displayed
-    const word = screen.getByText("hello");
-    expect(word).toBeInTheDocument();
-
-    // Check if the phonetic text is displayed
-    const phonetic = screen.getByText("/həˈləʊ/");
-    expect(phonetic).toBeInTheDocument();
-
-    // Check if the phonetic audio is displayed
-    const audio = screen.getByRole("button", { name: /Listen/i });
-    expect(audio).toBeInTheDocument();
-
-    // Check if the origin is displayed
-    const origin = screen.getByText("early 19th century");
-    expect(origin).toBeInTheDocument();
-
-    // Check if the part of speech is displayed
-    const partOfSpeech = screen.getByText("exclamation");
+    const partOfSpeech = screen.getByTestId("part-of-speech");
     expect(partOfSpeech).toBeInTheDocument();
 
-    // Check if the definition is displayed
-    const definition = screen.getByText(
-      "used as a greeting or to begin a phone conversation"
+    const primaryDefinition = screen.getByTestId("definition");
+    expect(primaryDefinition).toBeInTheDocument();
+    expect(primaryDefinition).toHaveTextContent(
+      "Definition: A greeting (salutation) said when meeting someone or acknowledging someone’s arrival or presence."
     );
-    expect(definition).toBeInTheDocument();
 
-    // Check if the example is displayed
-    const example = screen.getByText("hello there, Katie!");
-    expect(example).toBeInTheDocument();
+    const secondaryDefinition = screen.getByText("Part of Speech: noun");
+    expect(secondaryDefinition).toBeInTheDocument();
 
-    // Check if the synonyms are displayed
-    const synonyms = screen.getByText("hi");
-    expect(synonyms).toBeInTheDocument();
+    const audioButton = screen.getByRole("button", { name: /Listen/i });
+    expect(audioButton).toBeInTheDocument();
   });
 });

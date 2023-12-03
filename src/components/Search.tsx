@@ -1,8 +1,8 @@
 import { Box, Heading, useToken } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
-import DefinitionDisplay from "../DefinitionDisplay";
-import SearchBar from "../SearchBar";
+import DefinitionDisplay from "./DefinitionDisplay";
+import SearchBar from "./SearchBar";
 
 interface Phonetic {
   text: string;
@@ -70,12 +70,17 @@ const Search: React.FC = () => {
   };
 
   return (
-    <Box p={4} color={useToken("colors", "gray.800", "gray.200")}>
+    <Box
+      p={4}
+      color={useToken("colors", "gray.800", "gray.200")}
+      data-testid="search-component"
+    >
+      {" "}
+      {/* Add data-testid for the search component */}
       <Heading as="h1" size="xl" mb={4}>
         Search for a word
       </Heading>
       <SearchBar onSearch={handleSearch} onClear={handleClear} />
-
       {definitions.map((definition, index) => (
         <DefinitionDisplay key={index} definition={definition} />
       ))}

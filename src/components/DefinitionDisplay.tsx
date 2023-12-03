@@ -1,7 +1,7 @@
 // DefinitionDisplay.tsx
 import { Box, Heading, Text } from "@chakra-ui/react";
 import React from "react";
-import { Definition } from "./search/Search";
+import { Definition } from "./Search";
 
 export interface DefinitionDisplayProps {
   definition: Definition;
@@ -11,7 +11,13 @@ const DefinitionDisplay: React.FC<DefinitionDisplayProps> = ({
   definition,
 }) => {
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="md">
+    <Box
+      p={4}
+      borderWidth="1px"
+      borderRadius="lg"
+      boxShadow="md"
+      data-testid="definition-display"
+    >
       <Heading as="h2" size="lg" mb={4}>
         {definition.word}
       </Heading>

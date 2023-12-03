@@ -1,18 +1,39 @@
 // DefinitionDisplay.test.tsx
 import { render, screen, within } from "@testing-library/react";
 import DefinitionDisplay from "../components/DefinitionDisplay";
-import apiMockData from "../components/search/apiMockData.json";
 
 describe("DefinitionDisplay", () => {
   test("renders the definition component", () => {
-    const mockDefinition = apiMockData[0]; // Assuming you have only one definition in the array
-
+    const mockDefinition = {
+      word: "hello",
+      phonetics: [
+        {
+          text: "/həˈləʊ/",
+          audio: "https://lex-audio.useremarkable.com/mp3/hello_us_1_rr.mp3",
+        },
+      ],
+      origin: "early 19th century",
+      meanings: [
+        {
+          partOfSpeech: "exclamation",
+          definitions: [
+            {
+              definition:
+                "used as a greeting or to begin a phone conversation.",
+              example: "hello there, Katie!",
+              synonyms: ["hi", "howdy", "hey", "aloha", "greetings", "hiya"],
+              antonyms: ["goodbye"],
+            },
+          ],
+        },
+      ],
+    };
     render(<DefinitionDisplay definition={mockDefinition} />);
 
     // Test if the word is displayed
     expect(screen.getByText("hello")).toBeInTheDocument();
 
-    // Use within to narrow down the search scope
+    // Scope is used to narrow down the search to a specific element
     const partOfSpeechElement = within(
       screen.getByTestId("part-of-speech")
     ).getByText("Part of Speech: exclamation");
@@ -24,7 +45,5 @@ describe("DefinitionDisplay", () => {
       "Definition: used as a greeting or to begin a phone conversation."
     );
     expect(definitionElement).toBeInTheDocument();
-
-    // You can add more specific tests based on your component's content
   });
 });
