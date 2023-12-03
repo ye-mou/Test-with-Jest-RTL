@@ -1,7 +1,7 @@
 // DefinitionDisplay.test.tsx
 import { render, screen, within } from "@testing-library/react";
-import DefinitionDisplay from "../src/components/DefinitionDisplay";
-import apiMockData from "../src/components/search/apiMockData.json";
+import DefinitionDisplay from "../components/DefinitionDisplay";
+import apiMockData from "../components/search/apiMockData.json";
 
 describe("DefinitionDisplay", () => {
   test("renders the definition component", () => {

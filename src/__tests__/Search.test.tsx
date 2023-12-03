@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Search from "../src/components/search/Search";
+import Search from "../components/search/Search";
 
 describe("Search component", () => {
   test("should allow users to search for a word and display the result of the word", async () => {

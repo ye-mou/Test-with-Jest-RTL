@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import SearchBar from "../src/components/SearchBar";
-import apiMockData from "../src/components/search/apiMockData.json"; // Correct import statement
+import SearchBar from "../components/SearchBar";
+import apiMockData from "../components/search/apiMockData.json"; // Correct import statement
 
 // This is to group the tests
 describe("SearchBar", () => {
